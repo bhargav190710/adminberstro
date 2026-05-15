@@ -472,6 +472,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .order-total {
@@ -491,6 +493,7 @@
         .action-btns {
             display: flex;
             gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
         .action-btn {
@@ -531,6 +534,23 @@
             background: var(--error-bg);
             color: var(--error);
             border: 1px solid var(--error);
+        }
+
+        .btn-print {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-history {
+            background: var(--cream);
+            color: var(--primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-history:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
         }
 
         /* Empty State */
@@ -598,6 +618,340 @@
             opacity: 0.5;
         }
 
+        /* ═══════════════════════════════════════════════════════════════
+           MODAL STYLES - User History & Print Bill
+           ═══════════════════════════════════════════════════════════════ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(44, 24, 16, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-container {
+            background: white;
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(139,0,0,0.25);
+            animation: modalSlideIn 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .modal-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--accent);
+            color: var(--primary-dark);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            background: var(--cream);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        /* User History Modal Specific */
+        .user-summary {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.25rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .user-summary h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-summary p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin: 0.25rem 0;
+        }
+
+        .user-summary .highlight {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .history-order-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .history-order-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(139,0,0,0.08);
+        }
+
+        .history-order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .history-order-header .order-id-time {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .history-order-header .order-total-small {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .history-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .history-item .item-name {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .history-item .item-qty {
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        .history-item .item-price {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .history-grand-total {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-grand-total span:first-child {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .history-grand-total span:last-child {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           PRINT BILL STYLES
+           ═══════════════════════════════════════════════════════════════ */
+        .bill-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px dashed var(--border);
+        }
+
+        .bill-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .bill-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .bill-header p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .bill-customer-info {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: var(--cream);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .bill-customer-info p {
+            margin: 0.2rem 0;
+            color: var(--text);
+        }
+
+        .bill-customer-info strong {
+            color: var(--primary);
+        }
+
+        .bill-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .bill-table thead th {
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .bill-table thead th:last-child,
+        .bill-table tbody td:last-child {
+            text-align: right;
+        }
+
+        .bill-table tbody td {
+            padding: 0.6rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .bill-table tbody tr:last-child td {
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .bill-total-section {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 1rem;
+            padding-top: 0.5rem;
+        }
+
+        .bill-total-section span:first-child {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .bill-total-section span:last-child {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .bill-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border);
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .bill-footer p {
+            margin: 0.25rem 0;
+        }
+
+        /* Print-specific styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .print-area, .print-area * {
+                visibility: visible;
+            }
+            .print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .header { padding: 1rem; }
@@ -607,6 +961,7 @@
             .orders-container { padding: 0 1rem 2rem; }
             .orders-grid { grid-template-columns: 1fr; }
             .order-card { border-radius: 16px; }
+            .modal-container { max-width: 100%; border-radius: 16px; }
         }
 
         /* Loading */
@@ -641,6 +996,7 @@
             color: var(--primary);
         }
     </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -743,6 +1099,46 @@
         <span id="toastMessage">Notification</span>
     </div>
 
+    <!-- ═══════════════════════════════════════════════════════════════
+         USER HISTORY MODAL
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="userHistoryModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>📋 User Order History</h2>
+                <button class="modal-close" onclick="closeUserHistoryModal()">✕</button>
+            </div>
+            <div class="modal-body" id="userHistoryBody">
+                <!-- Populated by JS -->
+            </div>
+            <div class="modal-footer no-print">
+                <button class="action-btn btn-print" onclick="printUserBill()">🖨️ Print Bill</button>
+                <button class="action-btn btn-cancel" onclick="closeUserHistoryModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         PRINT BILL MODAL
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="printBillModal">
+        <div class="modal-container" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>🧾 Print Bill</h2>
+                <button class="modal-close" onclick="closePrintBillModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="print-area" id="printBillArea">
+                    <!-- Bill content populated by JS -->
+                </div>
+            </div>
+            <div class="modal-footer no-print">
+                <button class="action-btn btn-print" onclick="executePrint()">🖨️ Print Now</button>
+                <button class="action-btn btn-cancel" onclick="closePrintBillModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -767,19 +1163,13 @@
         // ═══════════════════════════════════════════════════════════════
         // ADMIN AUTH CHECK
         // ═══════════════════════════════════════════════════════════════
-        const ADMIN_EMAILS = ['admin@swadisht.com']; // Add your admin emails here
+        const ADMIN_EMAILS = ['admin@swadisht.com'];
 
         auth.onAuthStateChanged((user) => {
             if (!user) {
-                // Not logged in - redirect to login
                 window.location.href = 'login.html';
                 return;
             }
-
-            // Check if user is admin (you can customize this logic)
-            // For now, allow any logged-in user to access admin panel
-            // In production, check against ADMIN_EMAILS array
-
             document.getElementById('loadingOverlay').classList.add('hidden');
             startListeningToOrders();
         });
@@ -806,25 +1196,19 @@
 
         function playNotificationSound() {
             if (!audioEnabled) return;
-
             try {
                 if (!audioContext) {
                     audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 }
-
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
-
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
-
-                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
-                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
-
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
                 gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-
                 oscillator.start(audioContext.currentTime);
                 oscillator.stop(audioContext.currentTime + 0.5);
             } catch (e) {
@@ -840,7 +1224,6 @@
         let lastOrderCount = 0;
 
         function startListeningToOrders() {
-            // Real-time listener for orders
             db.collection('orders')
                 .orderBy('createdAt', 'desc')
                 .onSnapshot((snapshot) => {
@@ -853,7 +1236,6 @@
                         });
                     });
 
-                    // Check for new orders
                     const newOrders = orders.filter(o => o.status === 'pending');
                     if (newOrders.length > lastOrderCount && lastOrderCount > 0) {
                         playNotificationSound();
@@ -876,7 +1258,6 @@
             const ready = allOrders.filter(o => o.status === 'ready').length;
             const served = allOrders.filter(o => o.status === 'served').length;
 
-            // Calculate today's revenue
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const todayRevenue = allOrders
@@ -888,7 +1269,6 @@
             document.getElementById('readyCount').textContent = ready;
             document.getElementById('todayRevenue').textContent = `₹${todayRevenue.toLocaleString()}`;
 
-            // Update badges
             document.getElementById('allBadge').textContent = allOrders.length;
             document.getElementById('pendingBadge').textContent = pending;
             document.getElementById('preparingBadge').textContent = preparing;
@@ -905,7 +1285,6 @@
 
         function renderOrders() {
             const grid = document.getElementById('ordersGrid');
-
             let filtered = allOrders;
             if (currentFilter !== 'all') {
                 filtered = allOrders.filter(o => o.status === currentFilter);
@@ -981,6 +1360,12 @@
                                 <span>Total</span> ₹${order.total || 0}
                             </div>
                             <div class="action-btns">
+                                <button class="action-btn btn-history" onclick="openUserHistory('${order.id}')" title="View all orders from this user in last 3 hours">
+                                    📋 History
+                                </button>
+                                <button class="action-btn btn-print" onclick="openPrintBill('${order.id}')" title="Print bill for this user's last 3 hours">
+                                    🖨️ Print Bill
+                                </button>
                                 ${getActionButtons(order)}
                             </div>
                         </div>
@@ -1015,18 +1400,17 @@
 
         function getActionButtons(order) {
             const buttons = [];
-
             switch(order.status) {
                 case 'pending':
-                    buttons.push(`<button class="action-btn btn-prepare" onclick="updateStatus('${order.id}', 'preparing')">👨‍🍳 Start Preparing</button>`);
+                    buttons.push(`<button class="action-btn btn-prepare" onclick="updateStatus('${order.id}', 'preparing')">👨‍🍳 Start</button>`);
                     buttons.push(`<button class="action-btn btn-cancel" onclick="updateStatus('${order.id}', 'cancelled')">❌ Cancel</button>`);
                     break;
                 case 'preparing':
-                    buttons.push(`<button class="action-btn btn-ready" onclick="updateStatus('${order.id}', 'ready')">✅ Mark Ready</button>`);
+                    buttons.push(`<button class="action-btn btn-ready" onclick="updateStatus('${order.id}', 'ready')">✅ Ready</button>`);
                     buttons.push(`<button class="action-btn btn-cancel" onclick="updateStatus('${order.id}', 'cancelled')">❌ Cancel</button>`);
                     break;
                 case 'ready':
-                    buttons.push(`<button class="action-btn btn-serve" onclick="updateStatus('${order.id}', 'served')">🍽️ Mark Served</button>`);
+                    buttons.push(`<button class="action-btn btn-serve" onclick="updateStatus('${order.id}', 'served')">🍽️ Served</button>`);
                     break;
                 case 'served':
                     buttons.push(`<span style="color: var(--text-light); font-size: 0.85rem; padding: 0.6rem;">✓ Completed</span>`);
@@ -1035,7 +1419,6 @@
                     buttons.push(`<span style="color: var(--error); font-size: 0.85rem; padding: 0.6rem;">❌ Cancelled</span>`);
                     break;
             }
-
             return buttons.join('');
         }
 
@@ -1056,7 +1439,6 @@
         function getTimeAgo(date) {
             const now = new Date();
             const diff = Math.floor((now - date) / 1000);
-
             if (diff < 60) return 'Just now';
             if (diff < 3600) return `${Math.floor(diff / 60)} min ago`;
             if (diff < 86400) return `${Math.floor(diff / 3600)} hr ago`;
@@ -1069,6 +1451,248 @@
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
+
+        // ═══════════════════════════════════════════════════════════════
+        // USER HISTORY FEATURE - Filter same user orders within 3 hours
+        // ═══════════════════════════════════════════════════════════════
+        let currentUserHistoryOrders = [];
+        let currentUserInfo = null;
+
+        function openUserHistory(orderId) {
+            const order = allOrders.find(o => o.id === orderId);
+            if (!order) {
+                showToast('Order not found');
+                return;
+            }
+
+            // Identify user by email or userId
+            const userIdentifier = order.userEmail || order.userId || order.userName;
+            if (!userIdentifier) {
+                showToast('Cannot identify user for this order');
+                return;
+            }
+
+            currentUserInfo = {
+                name: order.userName || 'Guest',
+                email: order.userEmail || 'No email',
+                table: order.tableNumber || '?',
+                identifier: userIdentifier
+            };
+
+            // Filter orders from same user within last 3 hours
+            const threeHoursAgo = new Date(Date.now() - 3 * 60 * 60 * 1000);
+            currentUserHistoryOrders = allOrders.filter(o => {
+                const orderUserId = o.userEmail || o.userId || o.userName;
+                return orderUserId === userIdentifier && o.createdAt >= threeHoursAgo;
+            }).sort((a, b) => b.createdAt - a.createdAt);
+
+            renderUserHistoryModal();
+            document.getElementById('userHistoryModal').classList.add('active');
+        }
+
+        function renderUserHistoryModal() {
+            const body = document.getElementById('userHistoryBody');
+            const totalAmount = currentUserHistoryOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+            const totalItems = currentUserHistoryOrders.reduce((sum, o) => {
+                return sum + (o.items?.reduce((isum, item) => isum + (item.quantity || 0), 0) || 0);
+            }, 0);
+
+            body.innerHTML = `
+                <div class="user-summary">
+                    <h3>👤 ${currentUserInfo.name}</h3>
+                    <p>📧 ${currentUserInfo.email}</p>
+                    <p>🪑 Table: <span class="highlight">${currentUserInfo.table}</span></p>
+                    <p>📦 Orders in last 3 hours: <span class="highlight">${currentUserHistoryOrders.length}</span></p>
+                    <p>🍽️ Total Items: <span class="highlight">${totalItems}</span></p>
+                    <p>💰 Combined Total: <span class="highlight">₹${totalAmount.toLocaleString()}</span></p>
+                </div>
+
+                <h3 style="font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 1rem; font-size: 1.2rem;">
+                    Order Details (Last 3 Hours)
+                </h3>
+
+                ${currentUserHistoryOrders.length === 0 ? `
+                    <div class="empty-state" style="padding: 2rem;">
+                        <div class="empty-state-icon">📭</div>
+                        <h3>No orders found</h3>
+                        <p>No orders from this user in the last 3 hours</p>
+                    </div>
+                ` : currentUserHistoryOrders.map(order => `
+                    <div class="history-order-card">
+                        <div class="history-order-header">
+                            <div class="order-id-time">
+                                <strong>Order #${order.id.slice(-6).toUpperCase()}</strong> • 
+                                ${order.createdAt.toLocaleTimeString('en-IN', {hour: '2-digit', minute:'2-digit'})} • 
+                                <span class="status-badge ${order.status}" style="display: inline; padding: 0.2rem 0.5rem; font-size: 0.7rem;">
+                                    ${getStatusIcon(order.status)} ${order.status}
+                                </span>
+                            </div>
+                            <div class="order-total-small">₹${order.total || 0}</div>
+                        </div>
+                        <div class="history-items-list">
+                            ${order.items?.map(item => `
+                                <div class="history-item">
+                                    <div class="item-name">
+                                        ${getItemIcon(item.category)} ${item.name}
+                                        <span class="item-qty">× ${item.quantity}</span>
+                                    </div>
+                                    <span class="item-price">₹${item.total || (item.price * item.quantity)}</span>
+                                </div>
+                            `).join('') || '<div style="color: var(--text-light); font-size: 0.85rem;">No items</div>'}
+                        </div>
+                        ${order.specialInstructions ? `
+                            <div style="margin-top: 0.5rem; padding: 0.5rem; background: var(--cream); border-radius: 6px; font-size: 0.8rem; color: var(--text-light); border-left: 2px solid var(--accent);">
+                                📝 ${order.specialInstructions}
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('')}
+
+                ${currentUserHistoryOrders.length > 0 ? `
+                    <div class="history-grand-total">
+                        <span>Grand Total (${currentUserHistoryOrders.length} orders)</span>
+                        <span>₹${totalAmount.toLocaleString()}</span>
+                    </div>
+                ` : ''}
+            `;
+        }
+
+        function closeUserHistoryModal() {
+            document.getElementById('userHistoryModal').classList.remove('active');
+        }
+
+        function printUserBill() {
+            if (currentUserHistoryOrders.length === 0) {
+                showToast('No orders to print');
+                return;
+            }
+            // Build bill HTML and open print modal
+            buildBillHTML(currentUserHistoryOrders, currentUserInfo);
+            document.getElementById('userHistoryModal').classList.remove('active');
+            document.getElementById('printBillModal').classList.add('active');
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // PRINT BILL FEATURE
+        // ═══════════════════════════════════════════════════════════════
+        function openPrintBill(orderId) {
+            const order = allOrders.find(o => o.id === orderId);
+            if (!order) {
+                showToast('Order not found');
+                return;
+            }
+
+            const userIdentifier = order.userEmail || order.userId || order.userName;
+            if (!userIdentifier) {
+                showToast('Cannot identify user for this order');
+                return;
+            }
+
+            const threeHoursAgo = new Date(Date.now() - 3 * 60 * 60 * 1000);
+            const userOrders = allOrders.filter(o => {
+                const orderUserId = o.userEmail || o.userId || o.userName;
+                return orderUserId === userIdentifier && o.createdAt >= threeHoursAgo;
+            }).sort((a, b) => b.createdAt - a.createdAt);
+
+            const userInfo = {
+                name: order.userName || 'Guest',
+                email: order.userEmail || 'No email',
+                table: order.tableNumber || '?'
+            };
+
+            buildBillHTML(userOrders, userInfo);
+            document.getElementById('printBillModal').classList.add('active');
+        }
+
+        function buildBillHTML(orders, userInfo) {
+            const totalAmount = orders.reduce((sum, o) => sum + (o.total || 0), 0);
+            const totalItems = orders.reduce((sum, o) => {
+                return sum + (o.items?.reduce((isum, item) => isum + (item.quantity || 0), 0) || 0);
+            }, 0);
+
+            const now = new Date();
+            const billDate = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+            const billTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+
+            let allItemsHTML = '';
+            orders.forEach((order, idx) => {
+                order.items?.forEach(item => {
+                    allItemsHTML += `
+                        <tr>
+                            <td>${getItemIcon(item.category)} ${item.name}</td>
+                            <td>${item.quantity}</td>
+                            <td>₹${item.price}</td>
+                            <td>₹${item.total || (item.price * item.quantity)}</td>
+                        </tr>
+                    `;
+                });
+            });
+
+            const billHTML = `
+                <div class="bill-container">
+                    <div class="bill-header">
+                        <h2>🍛 Swadisht</h2>
+                        <p>Premium Indian Cuisine</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                            ${billDate} &nbsp;|&nbsp; ${billTime}
+                        </p>
+                    </div>
+
+                    <div class="bill-customer-info">
+                        <p><strong>Customer:</strong> ${userInfo.name}</p>
+                        <p><strong>Table:</strong> ${userInfo.table}</p>
+                        <p><strong>Email:</strong> ${userInfo.email}</p>
+                        <p><strong>Period:</strong> Last 3 Hours</p>
+                        <p><strong>Orders:</strong> ${orders.length} orders | ${totalItems} items</p>
+                    </div>
+
+                    <table class="bill-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Qty</th>
+                                <th>Rate</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${allItemsHTML || '<tr><td colspan="4" style="text-align:center; color: var(--text-light);">No items</td></tr>'}
+                        </tbody>
+                    </table>
+
+                    <div class="bill-total-section">
+                        <span>Grand Total</span>
+                        <span>₹${totalAmount.toLocaleString()}</span>
+                    </div>
+
+                    <div class="bill-footer">
+                        <p>Thank you for dining with us! 🙏</p>
+                        <p>Swadisht - Where Every Bite is a Celebration</p>
+                        <p style="font-size: 0.75rem; margin-top: 0.5rem; opacity: 0.7;">
+                            Bill ID: BILL-${Date.now().toString(36).toUpperCase()}
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('printBillArea').innerHTML = billHTML;
+        }
+
+        function closePrintBillModal() {
+            document.getElementById('printBillModal').classList.remove('active');
+        }
+
+        function executePrint() {
+            window.print();
+        }
+
+        // Close modals on overlay click
+        document.getElementById('userHistoryModal').addEventListener('click', function(e) {
+            if (e.target === this) closeUserHistoryModal();
+        });
+        document.getElementById('printBillModal').addEventListener('click', function(e) {
+            if (e.target === this) closePrintBillModal();
+        });
 
         // Request notification permission
         if ('Notification' in window && Notification.permission === 'default') {
